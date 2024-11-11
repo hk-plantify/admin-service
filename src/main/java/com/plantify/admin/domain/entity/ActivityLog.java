@@ -1,10 +1,11 @@
-package com.plantify.user.domain.entity;
+package com.plantify.admin.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.Date;
 
@@ -13,39 +14,33 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class ActivityLog {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long userId;
-
-    @Column(unique = true)
-    private Long kakaoId;
-
-    @Column(nullable = false)
-    private String nickname;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    private Long activityLogId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
+    private TargetType targetType;
+
+    @Column(nullable = false)
+    private Long targetId;
+
+    @Column(nullable = false, updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timestamp;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ActionType actionType;
+
+    @Column(nullable = false)
+    private Long userId;
 
     @PrePersist
     protected void onCreate() {
-        createdAt = new Date();
-        updatedAt = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = new Date();
+        timestamp = new Date();
     }
 }

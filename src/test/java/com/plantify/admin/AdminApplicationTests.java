@@ -1,10 +1,10 @@
-package com.plantify.user;
+package com.plantify.admin;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class UserApplicationTests {
+class AdminApplicationTests {
 
 	@Test
 	void contextLoads() {

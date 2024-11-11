@@ -1,4 +1,4 @@
-package com.plantify.user.config;
+package com.plantify.admin.config;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;

@@ -1,4 +1,4 @@
-package com.plantify.user.config;
+package com.plantify.admin.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
