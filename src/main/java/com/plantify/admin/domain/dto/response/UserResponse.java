@@ -1,13 +1,26 @@
 package com.plantify.admin.domain.dto.response;
 
+import com.plantify.admin.domain.entity.Role;
 import com.plantify.admin.domain.entity.User;
 
-public record UserResponse(Long kakaoId, String role) {
+import java.time.LocalDateTime;
+
+public record UserResponse(
+        Long userId,
+        Long kakaoId,
+        String username,
+        Role role,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
 
     public static UserResponse from(User user) {
         return new UserResponse(
+                user.getUserId(),
                 user.getKakaoId(),
-                user.getRole().toString()
+                user.getUsername(),
+                user.getRole(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
         );
     }
 }

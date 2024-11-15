@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,7 +15,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActivityLog {
+public class ActivityLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +29,6 @@ public class ActivityLog {
     @Column(nullable = false)
     private Long targetId;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ActionType actionType;
@@ -39,8 +36,4 @@ public class ActivityLog {
     @Column(nullable = false)
     private Long userId;
 
-    @PrePersist
-    protected void onCreate() {
-        timestamp = new Date();
-    }
 }
