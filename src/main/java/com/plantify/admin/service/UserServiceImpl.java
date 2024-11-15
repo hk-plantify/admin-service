@@ -23,8 +23,8 @@ public class UserServiceImpl implements UserService {
     private final AuthenticationService authenticationService;
 
     @Override
-    public List<UserResponse> getAllUsers(String authorizationHeader) {
-        authenticationService.validateAdminRole(authorizationHeader);
+    public List<UserResponse> getAllUsers() {
+        authenticationService.validateAdminRole();
         return userRepository.findAll()
                 .stream()
                 .map(UserResponse::from)
@@ -32,16 +32,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponse getUser(String authorizationHeader, Long userId) {
-        authenticationService.validateAdminRole(authorizationHeader);
+    public UserResponse getUser(Long userId) {
+        authenticationService.validateAdminRole();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
         return UserResponse.from(user);
     }
 
     @Override
-    public UserResponse updateUser(String authorizationHeader, Long userId, UserRequest request) {
-        authenticationService.validateAdminRole(authorizationHeader);
+    public UserResponse updateUser(Long userId, UserRequest request) {
+        authenticationService.validateAdminRole();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
         User updatedUser = user.toBuilder()
@@ -54,8 +54,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUser(String authorizationHeader, Long userId) {
-        authenticationService.validateAdminRole(authorizationHeader);
+    public void deleteUser(Long userId) {
+        authenticationService.validateAdminRole();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
         userRepository.delete(user);
