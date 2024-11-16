@@ -19,30 +19,27 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers(
-            @RequestHeader("Authorization") String authorizationHeader) {
-        List<UserResponse> users = userService.getAllUsers(authorizationHeader);
+    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
+        List<UserResponse> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.ok(users));
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<UserResponse>> getUser(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long userId) {
-        UserResponse response = userService.getUser(authorizationHeader, userId);
+    public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long userId) {
+        UserResponse response = userService.getUser(userId);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @PutMapping("/users/{userId}")
     public ResponseEntity<ApiResponse<UserResponse>> updateUser(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long userId, @RequestParam UserRequest request) {
-        UserResponse response = userService.updateUser(authorizationHeader, userId, request);
+            @PathVariable Long userId, @RequestBody UserRequest request) {
+        UserResponse response = userService.updateUser(userId, request);
         return ResponseEntity.ok(ApiResponse.ok(response));
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(
-            @RequestHeader("Authorization") String authorizationHeader, @PathVariable Long userId) {
-        userService.deleteUser(authorizationHeader, userId);
+    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
         return ResponseEntity.ok(ApiResponse.ok());
     }
 }
