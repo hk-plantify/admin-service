@@ -1,9 +1,12 @@
 package com.plantify.admin.service;
 
+import com.plantify.admin.client.UserInfoProvider;
 import com.plantify.admin.domain.dto.request.ActivityLogRequest;
 import com.plantify.admin.domain.dto.response.ActivityLogResponse;
 import com.plantify.admin.domain.entity.ActivityLog;
 import com.plantify.admin.domain.entity.TargetType;
+import com.plantify.admin.global.exception.ApplicationException;
+import com.plantify.admin.global.exception.errorcode.ActivityLogErrorCode;
 import com.plantify.admin.repository.ActivityLogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,16 +21,19 @@ import java.util.stream.Collectors;
 public class ActivityLogServiceImpl implements ActivityLogService {
 
     private final ActivityLogRepository activityLogRepository;
+    private final UserInfoProvider userInfoProvider;
+
 
     @Override
     public void recordActivity(ActivityLogRequest request) {
-        ActivityLog activityLog = request.toEntity();
+        Long adminId = userInfoProvider.getUserInfo().userId();
+        ActivityLog activityLog = request.toEntity(adminId);
         activityLogRepository.save(activityLog);
     }
 
     @Override
     public List<ActivityLogResponse> getAllActivityLogs() {
-        return activityLogRepository.findAll()
+        return activityLogRepository.findByIsDeletedFalse()
                 .stream()
                 .map(ActivityLogResponse::from)
                 .collect(Collectors.toList());
@@ -35,9 +41,30 @@ public class ActivityLogServiceImpl implements ActivityLogService {
 
     @Override
     public List<ActivityLogResponse> getActivityLogs(TargetType targetType, Long targetId) {
-        return activityLogRepository.findByTargetTypeAndTargetId(targetType, targetId)
+        return activityLogRepository.findByTargetTypeAndTargetIdAndIsDeletedFalse(targetType, targetId)
                 .stream()
                 .map(ActivityLogResponse::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public ActivityLogResponse getActivityLogById(Long activityLogId) {
+        ActivityLog activityLog = activityLogRepository.findById(activityLogId)
+                .orElseThrow(() -> new ApplicationException(ActivityLogErrorCode.LOG_NOT_FOUND));
+        return ActivityLogResponse.from(activityLog);
+    }
+
+    @Override
+    public void deleteActivityLog(Long activityLogId) {
+        Long adminId = userInfoProvider.getUserInfo().userId();
+        ActivityLog activityLog = activityLogRepository.findById(activityLogId)
+                .orElseThrow(() -> new ApplicationException(ActivityLogErrorCode.LOG_NOT_FOUND));
+
+        activityLog = activityLog.toBuilder()
+                .isDeleted(true)
+                .modifiedBy(adminId)
+                .build();
+
+        activityLogRepository.save(activityLog);
     }
 }

@@ -24,7 +24,7 @@ public class ActivityLogController {
         return ResponseEntity.ok(ApiResponse.ok());
     }
 
-    @GetMapping("")
+    @GetMapping
     public ResponseEntity<ApiResponse<List<ActivityLogResponse>>> getAllActivityLogs() {
         List<ActivityLogResponse> allActivityLogs = activityLogService.getAllActivityLogs();
         return ResponseEntity.ok(ApiResponse.ok(allActivityLogs));
@@ -36,5 +36,17 @@ public class ActivityLogController {
             @RequestParam Long targetId) {
         List<ActivityLogResponse> activityLogs = activityLogService.getActivityLogs(targetType, targetId);
         return ResponseEntity.ok(ApiResponse.ok(activityLogs));
+    }
+
+    @GetMapping("/{activityLogId}")
+    public ResponseEntity<ApiResponse<ActivityLogResponse>> getActivityLogById(@PathVariable Long activityLogId) {
+        ActivityLogResponse activityLog = activityLogService.getActivityLogById(activityLogId);
+        return ResponseEntity.ok(ApiResponse.ok(activityLog));
+    }
+
+    @DeleteMapping("/{activityLogId}")
+    public ResponseEntity<ApiResponse<Void>> deleteActivityLog(@PathVariable Long activityLogId) {
+        activityLogService.deleteActivityLog(activityLogId);
+        return ResponseEntity.ok(ApiResponse.ok());
     }
 }

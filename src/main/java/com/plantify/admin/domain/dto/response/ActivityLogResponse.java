@@ -12,6 +12,8 @@ public record ActivityLogResponse(
         Long targetId,
         ActionType actionType,
         Long userId,
+        boolean isDeleted,
+        Long modifiedBy,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -23,6 +25,8 @@ public record ActivityLogResponse(
                 activityLog.getTargetId(),
                 activityLog.getActionType(),
                 activityLog.getUserId(),
+                activityLog.isDeleted(),
+                activityLog.getModifiedBy(),
                 activityLog.getCreatedAt(),
                 activityLog.getUpdatedAt()
         );

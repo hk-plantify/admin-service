@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ActivityLogRepository extends JpaRepository<ActivityLog, Long> {
 
-    List<ActivityLog> findByTargetTypeAndTargetId(TargetType targetType, Long targetId);
+    List<ActivityLog> findByIsDeletedFalse();
+    List<ActivityLog> findByTargetTypeAndTargetIdAndIsDeletedFalse(TargetType targetType, Long targetId);
 }
