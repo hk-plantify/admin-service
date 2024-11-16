@@ -11,7 +11,8 @@ public record UserResponse(
         String username,
         Role role,
         LocalDateTime createdAt,
-        LocalDateTime updatedAt) {
+        LocalDateTime updatedAt
+) {
 
     public static UserResponse from(User user) {
         return new UserResponse(

@@ -5,6 +5,7 @@ import com.plantify.admin.global.exception.ApplicationException;
 import com.plantify.admin.global.exception.errorcode.UserErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,16 +19,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final List<String> adminRoles;
 
     @Override
-    public boolean validateAdminRole(String authorizationHeader) {
-        String role = getRole(authorizationHeader);
+    public boolean validateAdminRole() {
+        String role = userInfoProvider.getUserInfo().role();
         if (adminRoles.contains(role)) {
             return true;
         }
-        throw new ApplicationException(UserErrorCode.USER_NOT_FOUND);
-    }
-
-    @Override
-    public String getRole(String authorizationHeader) {
-        return userInfoProvider.getUserInfo(authorizationHeader).role();
+        throw new ApplicationException(UserErrorCode.USER_ACCESS_DENIED);
     }
 }

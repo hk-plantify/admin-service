@@ -47,7 +47,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private Authentication getAuthentication(AuthUserResponse userResponse) {
         return new UsernamePasswordAuthenticationToken(
-                userResponse.kakaoId(), null,
+                userResponse.userId(), null,
                 List.of(new SimpleGrantedAuthority("ROLE_" + userResponse.role()))
         );
     }
