@@ -1,7 +1,11 @@
 package com.plantify.admin.service;
 
+import com.plantify.admin.client.UserInfoProvider;
+import com.plantify.admin.domain.dto.request.ActivityLogRequest;
 import com.plantify.admin.domain.dto.request.UserRequest;
 import com.plantify.admin.domain.dto.response.UserResponse;
+import com.plantify.admin.domain.entity.ActionType;
+import com.plantify.admin.domain.entity.TargetType;
 import com.plantify.admin.domain.entity.User;
 import com.plantify.admin.global.exception.ApplicationException;
 import com.plantify.admin.global.exception.errorcode.UserErrorCode;
@@ -17,14 +21,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserInternalService {
 
     private final UserRepository userRepository;
-    private final AuthenticationService authenticationService;
+    private final ActivityLogService activityLogService;
+    private final UserInfoProvider userInfoProvider;
 
     @Override
     public List<UserResponse> getAllUsers() {
-        authenticationService.validateAdminRole();
         return userRepository.findAll()
                 .stream()
                 .map(UserResponse::from)
@@ -33,31 +37,48 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getUser(Long userId) {
-        authenticationService.validateAdminRole();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
+        Long adminId = userInfoProvider.getUserInfo().userId();
+        recordActivityLog(TargetType.USER, userId, ActionType.VIEW, adminId);
+
         return UserResponse.from(user);
     }
 
     @Override
     public UserResponse updateUser(Long userId, UserRequest request) {
-        authenticationService.validateAdminRole();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
+        Long adminId = userInfoProvider.getUserInfo().userId();
+
         User updatedUser = user.toBuilder()
                 .username(request.username())
                 .role(request.role())
+                .modifiedBy(adminId)
                 .build();
-
         User savedUser = userRepository.save(updatedUser);
+        recordActivityLog(TargetType.USER, userId, ActionType.UPDATE, adminId);
+
         return UserResponse.from(savedUser);
     }
 
     @Override
     public void deleteUser(Long userId) {
-        authenticationService.validateAdminRole();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
+        Long adminId = userInfoProvider.getUserInfo().userId();
+
         userRepository.delete(user);
+        recordActivityLog(TargetType.USER, userId, ActionType.DELETE, adminId);
+    }
+
+    @Override
+    public void recordActivityLog(TargetType targetType, Long targetId, ActionType actionType, Long adminId) {
+        activityLogService.recordActivity(ActivityLogRequest.builder()
+                .targetType(targetType)
+                .targetId(targetId)
+                .actionType(actionType)
+                .userId(adminId)
+                .build());
     }
 }
