@@ -9,10 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor
 public class UserInfoProvider {
-
-    private final AuthServiceClient authServiceClient;
 
     public AuthUserResponse getUserInfo() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

@@ -24,6 +24,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (adminRoles.contains(role)) {
             return true;
         }
-        throw new ApplicationException(UserErrorCode.USER_NOT_FOUND);
+        throw new ApplicationException(UserErrorCode.USER_ACCESS_DENIED);
     }
 }
