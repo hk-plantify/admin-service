@@ -3,7 +3,6 @@ package com.plantify.admin.client;
 import com.plantify.admin.domain.dto.response.AuthUserResponse;
 import com.plantify.admin.global.exception.ApplicationException;
 import com.plantify.admin.global.exception.errorcode.AuthErrorCode;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
