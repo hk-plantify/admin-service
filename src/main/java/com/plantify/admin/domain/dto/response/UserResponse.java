@@ -10,6 +10,7 @@ public record UserResponse(
         Long kakaoId,
         String username,
         Role role,
+        Long modifiedBy,
         LocalDateTime createdAt,
         LocalDateTime updatedAt
 ) {
@@ -20,6 +21,7 @@ public record UserResponse(
                 user.getKakaoId(),
                 user.getUsername(),
                 user.getRole(),
+                user.getModifiedBy(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );

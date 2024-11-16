@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class ActivityLog extends BaseEntity {
@@ -36,4 +36,9 @@ public class ActivityLog extends BaseEntity {
     @Column(nullable = false)
     private Long userId;
 
+    @Column(nullable = false)
+    private boolean isDeleted = false;
+
+    @Column(nullable = true)
+    private Long modifiedBy;
 }
