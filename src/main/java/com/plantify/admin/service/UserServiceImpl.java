@@ -75,9 +75,9 @@ public class UserServiceImpl implements UserService, UserInternalService {
     @Override
     public void recordActivityLog(TargetType targetType, Long targetId, ActionType actionType, Long adminId) {
         activityLogService.recordActivity(ActivityLogRequest.builder()
-                .targetType(targetType)
+                .targetType(targetType.name())
                 .targetId(targetId)
-                .actionType(actionType)
+                .actionType(actionType.name())
                 .userId(adminId)
                 .build());
     }

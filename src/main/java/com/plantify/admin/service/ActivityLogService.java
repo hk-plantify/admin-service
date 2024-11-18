@@ -10,7 +10,9 @@ public interface ActivityLogService {
 
     void recordActivity(ActivityLogRequest request);
     List<ActivityLogResponse> getAllActivityLogs();
+    List<ActivityLogResponse> getDeletedActivityLogs();
     List<ActivityLogResponse> getActivityLogs(TargetType targetType, Long targetId);
     ActivityLogResponse getActivityLogById(Long activityLogId);
     void deleteActivityLog(Long activityLogId);
+    void restoreActivityLog(Long activityLogId);
 }

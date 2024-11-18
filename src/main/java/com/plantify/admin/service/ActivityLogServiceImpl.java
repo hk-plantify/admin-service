@@ -40,6 +40,14 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     }
 
     @Override
+    public List<ActivityLogResponse> getDeletedActivityLogs() {
+        return activityLogRepository.findByIsDeletedTrue()
+                .stream()
+                .map(ActivityLogResponse::from)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ActivityLogResponse> getActivityLogs(TargetType targetType, Long targetId) {
         return activityLogRepository.findByTargetTypeAndTargetIdAndIsDeletedFalse(targetType, targetId)
                 .stream()
@@ -62,6 +70,24 @@ public class ActivityLogServiceImpl implements ActivityLogService {
 
         activityLog = activityLog.toBuilder()
                 .isDeleted(true)
+                .modifiedBy(adminId)
+                .build();
+
+        activityLogRepository.save(activityLog);
+    }
+
+    @Override
+    public void restoreActivityLog(Long activityLogId) {
+        Long adminId = userInfoProvider.getUserInfo().userId();
+        ActivityLog activityLog = activityLogRepository.findById(activityLogId)
+                .orElseThrow(() -> new ApplicationException(ActivityLogErrorCode.LOG_NOT_FOUND));
+
+        if (!activityLog.isDeleted()) {
+            throw new ApplicationException(ActivityLogErrorCode.LOG_ALREADY_ACTIVE);
+        }
+
+        activityLog = activityLog.toBuilder()
+                .isDeleted(false)
                 .modifiedBy(adminId)
                 .build();
 

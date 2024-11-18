@@ -30,6 +30,12 @@ public class ActivityLogController {
         return ResponseEntity.ok(ApiResponse.ok(allActivityLogs));
     }
 
+    @GetMapping("/deleted")
+    public ResponseEntity<ApiResponse<List<ActivityLogResponse>>> getDeletedActivityLogs() {
+        List<ActivityLogResponse> deletedLogs = activityLogService.getDeletedActivityLogs();
+        return ResponseEntity.ok(ApiResponse.ok(deletedLogs));
+    }
+
     @GetMapping("/target")
     public ResponseEntity<ApiResponse<List<ActivityLogResponse>>> getActivityLogsByTarget(
             @RequestParam TargetType targetType,
@@ -47,6 +53,12 @@ public class ActivityLogController {
     @DeleteMapping("/{activityLogId}")
     public ResponseEntity<ApiResponse<Void>> deleteActivityLog(@PathVariable Long activityLogId) {
         activityLogService.deleteActivityLog(activityLogId);
+        return ResponseEntity.ok(ApiResponse.ok());
+    }
+
+    @PutMapping("/{activityLogId}/restore")
+    public ResponseEntity<ApiResponse<Void>> restoreActivityLog(@PathVariable Long activityLogId) {
+        activityLogService.restoreActivityLog(activityLogId);
         return ResponseEntity.ok(ApiResponse.ok());
     }
 }
