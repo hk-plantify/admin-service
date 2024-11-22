@@ -1,7 +1,7 @@
 package com.plantify.admin.service;
 
-import com.plantify.admin.client.UserInfoProvider;
-import com.plantify.admin.domain.dto.request.ActivityLogRequest;
+import com.plantify.admin.util.UserInfoProvider;
+import com.plantify.admin.domain.dto.request.ActivityHistoryRequest;
 import com.plantify.admin.domain.dto.request.UserRequest;
 import com.plantify.admin.domain.dto.response.UserResponse;
 import com.plantify.admin.domain.entity.ActionType;
@@ -14,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +23,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService, UserInternalService {
 
     private final UserRepository userRepository;
-    private final ActivityLogService activityLogService;
+    private final ActivityHistoryService activityLogService;
     private final UserInfoProvider userInfoProvider;
 
     @Override
@@ -74,7 +73,7 @@ public class UserServiceImpl implements UserService, UserInternalService {
 
     @Override
     public void recordActivityLog(TargetType targetType, Long targetId, ActionType actionType, Long adminId) {
-        activityLogService.recordActivity(ActivityLogRequest.builder()
+        activityLogService.recordActivity(ActivityHistoryRequest.builder()
                 .targetType(targetType.name())
                 .targetId(targetId)
                 .actionType(actionType.name())

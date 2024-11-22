@@ -1,12 +1,11 @@
 package com.plantify.admin.domain.dto.request;
 
 import com.plantify.admin.domain.entity.ActionType;
-import com.plantify.admin.domain.entity.ActivityLog;
+import com.plantify.admin.domain.entity.ActivityHistory;
 import com.plantify.admin.domain.entity.TargetType;
-import com.plantify.admin.global.exception.ApplicationException;
 import lombok.Builder;
 
-public record ActivityLogRequest(
+public record ActivityHistoryRequest(
         String targetType,
         Long targetId,
         String actionType,
@@ -16,10 +15,10 @@ public record ActivityLogRequest(
 ) {
 
     @Builder
-    public ActivityLogRequest {}
+    public ActivityHistoryRequest {}
 
-    public ActivityLog toEntity(Long adminId) {
-        return ActivityLog.builder()
+    public ActivityHistory toEntity(Long adminId) {
+        return ActivityHistory.builder()
                 .targetType(toTargetType())
                 .targetId(targetId)
                 .actionType(toActionType())

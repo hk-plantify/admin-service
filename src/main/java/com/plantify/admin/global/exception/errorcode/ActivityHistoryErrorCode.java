@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
-public enum ActivityLogErrorCode implements ErrorCode {
+public enum ActivityHistoryErrorCode implements ErrorCode {
 
     LOG_NOT_FOUND(HttpStatus.NOT_FOUND, "Activity log not found."),
     INVALID_LOG_REQUEST(HttpStatus.BAD_REQUEST, "Invalid activity log request."),
