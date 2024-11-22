@@ -5,22 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Getter
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActivityLog extends BaseEntity {
+public class ActivityHistory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long activityLogId;
+    private Long activityHistoryId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

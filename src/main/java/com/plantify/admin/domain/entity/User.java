@@ -18,7 +18,7 @@ public class User extends BaseEntity {
     @Column(unique = true, nullable = false)
     private Long userId;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private Long kakaoId;
 
     @Column(nullable = false)
