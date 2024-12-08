@@ -19,15 +19,15 @@ public class ActivityHistoryController {
     private final ActivityHistoryService activityHistoryService;
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Void>> recordActivityLog(@RequestBody ActivityHistoryRequest request) {
+    public ApiResponse<Void> recordActivityLog(@RequestBody ActivityHistoryRequest request) {
         activityHistoryService.recordActivity(request);
-        return ResponseEntity.ok(ApiResponse.ok());
+        return ApiResponse.ok();
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<ActivityHistoryResponse>>> getAllActivityLogs() {
+    public ApiResponse<List<ActivityHistoryResponse>> getAllActivityLogs() {
         List<ActivityHistoryResponse> allActivityLogs = activityHistoryService.getAllActivityLogs();
-        return ResponseEntity.ok(ApiResponse.ok(allActivityLogs));
+        return ApiResponse.ok(allActivityLogs);
     }
 
     @GetMapping("/deleted")
@@ -37,28 +37,28 @@ public class ActivityHistoryController {
     }
 
     @GetMapping("/target")
-    public ResponseEntity<ApiResponse<List<ActivityHistoryResponse>>> getActivityLogsByTarget(
+    public ApiResponse<List<ActivityHistoryResponse>> getActivityLogsByTarget(
             @RequestParam TargetType targetType,
             @RequestParam Long targetId) {
         List<ActivityHistoryResponse> activityLogs = activityHistoryService.getActivityLogs(targetType, targetId);
-        return ResponseEntity.ok(ApiResponse.ok(activityLogs));
+        return ApiResponse.ok(activityLogs);
     }
 
     @GetMapping("/{activityLogId}")
-    public ResponseEntity<ApiResponse<ActivityHistoryResponse>> getActivityLogById(@PathVariable Long activityLogId) {
+    public ApiResponse<ActivityHistoryResponse> getActivityLogById(@PathVariable Long activityLogId) {
         ActivityHistoryResponse activityLog = activityHistoryService.getActivityLogById(activityLogId);
-        return ResponseEntity.ok(ApiResponse.ok(activityLog));
+        return ApiResponse.ok(activityLog);
     }
 
     @DeleteMapping("/{activityLogId}")
-    public ResponseEntity<ApiResponse<Void>> deleteActivityLog(@PathVariable Long activityLogId) {
+    public ApiResponse<Void> deleteActivityLog(@PathVariable Long activityLogId) {
         activityHistoryService.deleteActivityLog(activityLogId);
-        return ResponseEntity.ok(ApiResponse.ok());
+        return ApiResponse.ok();
     }
 
     @PutMapping("/{activityLogId}/restore")
-    public ResponseEntity<ApiResponse<Void>> restoreActivityLog(@PathVariable Long activityLogId) {
+    public ApiResponse<Void> restoreActivityLog(@PathVariable Long activityLogId) {
         activityHistoryService.restoreActivityLog(activityLogId);
-        return ResponseEntity.ok(ApiResponse.ok());
+        return ApiResponse.ok();
     }
 }
