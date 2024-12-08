@@ -5,21 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
-
-import java.util.Date;
 
 @Entity
 @Getter
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ActivityLog {
+public class ActivityHistory extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
-    private Long activityLogId;
+    private Long activityHistoryId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -28,10 +25,6 @@ public class ActivityLog {
     @Column(nullable = false)
     private Long targetId;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date timestamp;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ActionType actionType;
@@ -39,8 +32,9 @@ public class ActivityLog {
     @Column(nullable = false)
     private Long userId;
 
-    @PrePersist
-    protected void onCreate() {
-        timestamp = new Date();
-    }
+    @Column(nullable = false)
+    private boolean isDeleted;
+
+    @Column(nullable = true)
+    private Long modifiedBy;
 }
