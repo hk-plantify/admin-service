@@ -1,6 +1,6 @@
 package com.plantify.admin.service;
 
-import com.plantify.admin.util.UserInfoProvider;
+import com.plantify.admin.global.util.UserInfoProvider;
 import com.plantify.admin.domain.dto.request.ActivityHistoryRequest;
 import com.plantify.admin.domain.dto.response.ActivityHistoryResponse;
 import com.plantify.admin.domain.entity.ActivityHistory;
@@ -36,7 +36,7 @@ public class ActivityHistoryServiceImpl implements ActivityHistoryService {
         return activityLogRepository.findByIsDeletedFalse()
                 .stream()
                 .map(ActivityHistoryResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ActivityHistoryServiceImpl implements ActivityHistoryService {
         return activityLogRepository.findByIsDeletedTrue()
                 .stream()
                 .map(ActivityHistoryResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ActivityHistoryServiceImpl implements ActivityHistoryService {
         return activityLogRepository.findByTargetTypeAndTargetIdAndIsDeletedFalse(targetType, targetId)
                 .stream()
                 .map(ActivityHistoryResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override

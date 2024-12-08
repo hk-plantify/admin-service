@@ -33,7 +33,7 @@ public class ActivityHistory extends BaseEntity {
     private Long userId;
 
     @Column(nullable = false)
-    private boolean isDeleted = false;
+    private boolean isDeleted;
 
     @Column(nullable = true)
     private Long modifiedBy;

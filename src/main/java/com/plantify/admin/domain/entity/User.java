@@ -27,7 +27,4 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role;
-
-    @Column(nullable = true)
-    private Long modifiedBy;
 }

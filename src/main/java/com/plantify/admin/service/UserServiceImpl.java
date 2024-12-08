@@ -1,6 +1,6 @@
 package com.plantify.admin.service;
 
-import com.plantify.admin.util.UserInfoProvider;
+import com.plantify.admin.global.util.UserInfoProvider;
 import com.plantify.admin.domain.dto.request.ActivityHistoryRequest;
 import com.plantify.admin.domain.dto.request.UserRequest;
 import com.plantify.admin.domain.dto.response.UserResponse;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserService, UserInternalService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final ActivityHistoryService activityLogService;
@@ -31,15 +31,13 @@ public class UserServiceImpl implements UserService, UserInternalService {
         return userRepository.findAll()
                 .stream()
                 .map(UserResponse::from)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     @Override
     public UserResponse getUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
-        Long adminId = userInfoProvider.getUserInfo().userId();
-        recordActivityLog(TargetType.USER, userId, ActionType.VIEW, adminId);
 
         return UserResponse.from(user);
     }
@@ -48,15 +46,9 @@ public class UserServiceImpl implements UserService, UserInternalService {
     public UserResponse updateUser(Long userId, UserRequest request) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
-        Long adminId = userInfoProvider.getUserInfo().userId();
 
-        User updatedUser = user.toBuilder()
-                .username(request.username())
-                .role(request.role())
-                .modifiedBy(adminId)
-                .build();
+        User updatedUser = request.updatedUser(user);
         User savedUser = userRepository.save(updatedUser);
-        recordActivityLog(TargetType.USER, userId, ActionType.UPDATE, adminId);
 
         return UserResponse.from(savedUser);
     }
@@ -65,19 +57,7 @@ public class UserServiceImpl implements UserService, UserInternalService {
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(UserErrorCode.USER_NOT_FOUND));
-        Long adminId = userInfoProvider.getUserInfo().userId();
 
         userRepository.delete(user);
-        recordActivityLog(TargetType.USER, userId, ActionType.DELETE, adminId);
-    }
-
-    @Override
-    public void recordActivityLog(TargetType targetType, Long targetId, ActionType actionType, Long adminId) {
-        activityLogService.recordActivity(ActivityHistoryRequest.builder()
-                .targetType(targetType.name())
-                .targetId(targetId)
-                .actionType(actionType.name())
-                .userId(adminId)
-                .build());
     }
 }

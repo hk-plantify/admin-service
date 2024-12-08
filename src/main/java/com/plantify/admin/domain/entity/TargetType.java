@@ -1,8 +1,7 @@
 package com.plantify.admin.domain.entity;
 
-public enum TargetType {
+import java.io.Serializable;
+
+public enum TargetType implements Serializable {
     USER, FUNDING, ITEM, PAY, CASH
-
-
-
 }
