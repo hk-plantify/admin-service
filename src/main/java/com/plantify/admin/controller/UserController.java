@@ -19,27 +19,27 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse<List<UserResponse>>> getAllUsers() {
+    public ApiResponse<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = userService.getAllUsers();
-        return ResponseEntity.ok(ApiResponse.ok(users));
+        return ApiResponse.ok(users);
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<UserResponse>> getUser(@PathVariable Long userId) {
+    public ApiResponse<UserResponse> getUser(@PathVariable Long userId) {
         UserResponse response = userService.getUser(userId);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        return ApiResponse.ok(response);
     }
 
     @PutMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<UserResponse>> updateUser(
+    public ApiResponse<UserResponse> updateUser(
             @PathVariable Long userId, @RequestBody UserRequest request) {
         UserResponse response = userService.updateUser(userId, request);
-        return ResponseEntity.ok(ApiResponse.ok(response));
+        return ApiResponse.ok(response);
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long userId) {
+    public ApiResponse<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
-        return ResponseEntity.ok(ApiResponse.ok());
+        return ApiResponse.ok();
     }
 }
