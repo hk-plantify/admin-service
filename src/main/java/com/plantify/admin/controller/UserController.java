@@ -13,31 +13,37 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/admin")
+@RequestMapping("/v1")
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("/users/search")
+    public ResponseEntity<Long> getUserId(@RequestParam String username) {
+        Long userId = userService.getUserId(username);
+        return ResponseEntity.ok(userId);
+    }
+
+    @GetMapping("/admin/users")
     public ApiResponse<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = userService.getAllUsers();
         return ApiResponse.ok(users);
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/admin/users/{userId}")
     public ApiResponse<UserResponse> getUser(@PathVariable Long userId) {
         UserResponse response = userService.getUser(userId);
         return ApiResponse.ok(response);
     }
 
-    @PutMapping("/users/{userId}")
+    @PutMapping("/admin/users/{userId}")
     public ApiResponse<UserResponse> updateUser(
             @PathVariable Long userId, @RequestBody UserRequest request) {
         UserResponse response = userService.updateUser(userId, request);
         return ApiResponse.ok(response);
     }
 
-    @DeleteMapping("/users/{userId}")
+    @DeleteMapping("/admin/users/{userId}")
     public ApiResponse<Void> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
         return ApiResponse.ok();
