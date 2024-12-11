@@ -18,12 +18,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/search")
-    public ResponseEntity<Long> getUserId(@RequestParam String username) {
-        Long userId = userService.getUserId(username);
-        return ResponseEntity.ok(userId);
-    }
-
     @GetMapping
     public ApiResponse<List<UserResponse>> getAllUsers() {
         List<UserResponse> users = userService.getAllUsers();
