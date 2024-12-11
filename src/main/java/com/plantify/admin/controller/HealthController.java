@@ -18,7 +18,7 @@ public class HealthController {
         return "OK";
     }
 
-    @GetMapping("/search")
+    @GetMapping("/v1/users/search")
     public ResponseEntity<Long> getUserId(@RequestParam String username) {
         Long userId = userService.getUserId(username);
         return ResponseEntity.ok(userId);
