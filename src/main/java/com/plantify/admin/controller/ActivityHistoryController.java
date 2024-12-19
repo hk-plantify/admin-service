@@ -7,11 +7,12 @@ import com.plantify.admin.global.response.ApiResponse;
 import com.plantify.admin.service.ActivityHistoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("v1/admin/activity-logs")
 public class ActivityHistoryController {

@@ -2,7 +2,6 @@ jasypt:
   encryptor:
     bean: jasyptStringEncryptor
     password: ${JASYPT_PASSWORD}
-
 spring:
   application:
     name: admin
@@ -18,13 +17,24 @@ spring:
       ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mvc:
+    view:
+      prefix: templates/
+      suffix: .html
+
 
 auth:
   service:
-    url: http://auth-service.auth.svc.cluster.local:8080
+    url: http://localhost:8888
 
 client:
   base:
     url: ENC(6glvmh8vfHd2D/ALcgqR+tXcm+DH+AZbkofU7nK5p2eE0RzPXoNE1uHTORYrT/dA)
   pay:
     url: ENC(YKKOs+X8eUEdzzngWa8yjQlR4W0uy69aKFe1AMAee9FP2nauBEWpCM6FyDXpbIprBGi7LReqA4M=)
+server:
+  port: 7777
+
+logging:
+  level:
+    org.springframework.security: debug
