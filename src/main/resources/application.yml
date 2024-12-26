@@ -1,0 +1,40 @@
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+    password: ${JASYPT_PASSWORD}
+spring:
+  application:
+    name: admin
+  datasource:
+    url: ENC(K01jNbcKIUljwo98YtS9qJ5e3PiC2ioQe97fNSKeJ/k9uTVqIgmicqU4NPOHWZjxRIuML2uFRKAXglsCWOizVDH8vHZwmdHGuGaoomTORvE=)
+    username: ENC(XhGT41xwg0J9hSXkV9tPjQ==)
+    password: ENC(cOWaniGDoCFEXR9v+wRBVEwsJ5Hg6vQN)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+  mvc:
+    view:
+      prefix: templates/
+      suffix: .html
+
+
+auth:
+  service:
+    url: http://localhost:8888
+
+client:
+  base:
+    url: ENC(6glvmh8vfHd2D/ALcgqR+tXcm+DH+AZbkofU7nK5p2eE0RzPXoNE1uHTORYrT/dA)
+  pay:
+    url: ENC(YKKOs+X8eUEdzzngWa8yjQlR4W0uy69aKFe1AMAee9FP2nauBEWpCM6FyDXpbIprBGi7LReqA4M=)
+server:
+  port: 7777
+
+logging:
+  level:
+    org.springframework.security: debug
